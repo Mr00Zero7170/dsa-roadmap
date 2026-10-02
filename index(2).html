@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DSA Roadmap: 60 days</title>
+<meta name="description" content="A 60-day DSA roadmap with a daily checklist, LeetCode problems and progress tracking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF1F5; --card:#FFFFFF; --ink:#101B33; --muted:#5B677D; --line:#D3DBE6;
+  --accent:#2447E0; --done:#14866D; --today:#F5B83D;
+  --p0:#7C8AA5; --p1:#2447E0; --p2:#8E3FD1; --p3:#E0742B;
+  --empty:#E1E7EF;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1424; --card:#161D31; --ink:#E7ECF6; --muted:#98A3BA; --line:#27314A;
+    --accent:#7C98FF; --done:#3CC6A2; --today:#F5B83D;
+    --p0:#8F9BB5; --p1:#7C98FF; --p2:#B887EA; --p3:#F29A63; --empty:#222B43;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Figtree,system-ui,sans-serif;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+.wrap{max-width:860px;margin:0 auto;padding:40px 20px 80px}
+h1,h2{font-family:"Bricolage Grotesque",Figtree,sans-serif;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2.6rem,9vw,4.6rem);font-weight:800;line-height:.98}
+.sub{max-width:52ch;color:var(--muted);margin:14px 0 0;font-size:1.05rem}
+button,input{font:inherit;color:inherit}
+.btn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0E1424}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:26px 0 0}
+.bar label{color:var(--muted);font-size:.92rem}
+input[type=date]{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+
+/* the 60-day board: the one memorable element */
+.board{margin:34px 0 0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px}
+.cell{aspect-ratio:1;border-radius:8px;border:2px solid var(--c);background:var(--empty);
+  display:grid;place-items:center;font:700 .85rem "Bricolage Grotesque",sans-serif;color:var(--muted);
+  text-decoration:none;position:relative}
+.cell:hover{transform:translateY(-2px)}
+.cell.done{background:var(--done);border-color:var(--done);color:#fff}
+.cell.today{box-shadow:0 0 0 3px var(--card),0 0 0 6px var(--today)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;color:var(--muted);font-size:.88rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:12px;height:12px;border-radius:4px;border:2px solid var(--c);display:inline-block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.stats b{display:block;font:800 1.9rem/1.1 "Bricolage Grotesque",sans-serif}
+.stats span{color:var(--muted);font-size:.9rem}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 14px;align-items:center}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.spacer{flex:1}
+
+.phase-title{display:flex;align-items:baseline;gap:12px;margin:34px 0 10px}
+.phase-title h2{font-size:1.5rem}
+.phase-title span{color:var(--muted);font-size:.92rem}
+details.day{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;border-left:6px solid var(--c)}
+details.day.done{opacity:.72}
+details.day.today{box-shadow:0 0 0 3px var(--today)}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px}
+summary::-webkit-details-marker{display:none}
+.num{font:800 1.3rem "Bricolage Grotesque",sans-serif;min-width:2.1ch;color:var(--c)}
+.t{flex:1;min-width:0}
+.t strong{display:block;font-weight:600}
+.t small{color:var(--muted)}
+.mini{width:64px;height:6px;border-radius:99px;background:var(--empty);overflow:hidden}
+.mini i{display:block;height:100%;background:var(--done);width:0}
+.body{padding:2px 16px 16px 16px}
+.row{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.row input{width:20px;height:20px;accent-color:var(--done);flex:none}
+.row a{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.row a:hover{text-decoration-color:var(--accent)}
+.row.ticked .name{text-decoration:line-through;color:var(--muted)}
+.name{flex:1}
+.diff{font-size:.8rem;font-weight:600;padding:1px 9px;border-radius:99px;border:1px solid currentColor}
+.diff.E{color:var(--done)} .diff.M{color:#C98A00} .diff.H{color:#D1432F}
+.learn{margin:12px 0 0;font-size:.92rem;color:var(--muted)}
+.learn a{color:var(--accent)}
+.rules{margin-top:44px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.rules h2{font-size:1.25rem;margin-bottom:8px}
+.rules p{margin:6px 0;color:var(--muted)}
+.acct{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 0;color:var(--muted);font-size:.92rem}
+.acct .who{color:var(--ink);font-weight:600}
+.acct .sync{color:var(--done)}
+@media (max-width:520px){
+  .grid{gap:5px} .cell{font-size:.72rem;border-width:2px;border-radius:6px}
+  .mini{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cell:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>DSA Roadmap</h1>
+    <p class="sub">60 days from basics to placement-ready. Each day has a topic to learn and a few problems to solve. Tick them off and your progress is saved in this browser.</p>
+    <div class="bar">
+      <label for="start">Start date</label>
+      <input type="date" id="start">
+      <button class="btn primary" id="goto">Go to today</button>
+    </div>
+    <div class="acct" id="acct" role="status">Progress is saved in this browser only.</div>
+  </header>
+
+  <section class="board" aria-label="Progress board">
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <span style="--c:var(--p0)"><i></i>Foundation (1-10)</span>
+      <span style="--c:var(--p1)"><i></i>Core patterns (11-40)</span>
+      <span style="--c:var(--p2)"><i></i>DP and more (41-52)</span>
+      <span style="--c:var(--p3)"><i></i>Revision and mocks (53-60)</span>
+    </div>
+    <div class="stats">
+      <div><b id="sDays">0/60</b><span>days done</span></div>
+      <div><b id="sProbs">0/0</b><span>problems solved</span></div>
+      <div><b id="sPct">0%</b><span>overall</span></div>
+    </div>
+  </section>
+
+  <div class="filters" id="filters">
+    <button class="chip" data-p="all" aria-pressed="true">All</button>
+    <button class="chip" data-p="0" aria-pressed="false">Foundation</button>
+    <button class="chip" data-p="1" aria-pressed="false">Core patterns</button>
+    <button class="chip" data-p="2" aria-pressed="false">DP and more</button>
+    <button class="chip" data-p="3" aria-pressed="false">Revision</button>
+    <span class="spacer"></span>
+    <button class="chip" id="hideDone" aria-pressed="false">Hide finished days</button>
+  </div>
+
+  <main id="list"></main>
+
+  <section class="rules">
+    <h2>How to use this</h2>
+    <p>Spend about 2 hours on the topic (watch, read, take notes) and about 1 hour on the problems.</p>
+    <p>If you can't solve a problem in 30 minutes, read the solution, make sure you understand it, then write it again from scratch the next day without looking.</p>
+    <p>Pick one language and stay with it for all 60 days.</p>
+    <div class="bar">
+      <button class="btn" id="copy">Copy backup code</button>
+      <button class="btn" id="restore">Restore from code</button>
+      <button class="btn" id="reset">Reset progress</button>
+    </div>
+    <p id="msg" role="status"></p>
+  </section>
+</div>
+
+<script>
+// [title, topic to learn, items]. item = [name, leetcode-slug or null for a plain task, difficulty]
+const DAYS = [
+/* Foundation */
+["Setup and first programs","arrays basics programming",[["Pick one language, install an IDE, create a LeetCode account",null],["Concatenation of Array","concatenation-of-array","E"],["Running Sum of 1d Array","running-sum-of-1d-array","E"]]],
+["Loops, conditions and basic math","loops conditionals number problems",[["Fizz Buzz","fizz-buzz","E"],["Palindrome Number","palindrome-number","E"],["Reverse Integer","reverse-integer","M"]]],
+["Arrays: traversal and simple tricks","array problems traversal",[["Best Time to Buy and Sell Stock","best-time-to-buy-and-sell-stock","E"],["Move Zeroes","move-zeroes","E"],["Contains Duplicate","contains-duplicate","E"]]],
+["Time and space complexity","time and space complexity big O",[["Single Number","single-number","E"],["Missing Number","missing-number","E"],["Majority Element","majority-element","E"]]],
+["Strings","string manipulation problems",[["Valid Anagram","valid-anagram","E"],["Reverse String","reverse-string","E"],["Valid Palindrome","valid-palindrome","E"]]],
+["Hashmaps","hashmap hash table",[["Two Sum","two-sum","E"],["Group Anagrams","group-anagrams","M"],["Top K Frequent Elements","top-k-frequent-elements","M"]]],
+["Prefix sums and hash sets","prefix sum technique",[["Longest Consecutive Sequence","longest-consecutive-sequence","M"],["Subarray Sum Equals K","subarray-sum-equals-k","M"],["Product of Array Except Self","product-of-array-except-self","M"]]],
+["Recursion basics","recursion for beginners",[["Fibonacci Number","fibonacci-number","E"],["Climbing Stairs","climbing-stairs","E"],["Pow(x, n)","powx-n","M"]]],
+["Binary search","binary search",[["Binary Search","binary-search","E"],["Search Insert Position","search-insert-position","E"],["Sqrt(x)","sqrtx","E"]]],
+["Binary search on arrays and answers","binary search on answer",[["Search in Rotated Sorted Array","search-in-rotated-sorted-array","M"],["Find Minimum in Rotated Sorted Array","find-minimum-in-rotated-sorted-array","M"],["Koko Eating Bananas","koko-eating-bananas","M"]]],
+/* Core patterns */
+["Two pointers","two pointers technique",[["Two Sum II","two-sum-ii-input-array-is-sorted","M"],["3Sum","3sum","M"],["Container With Most Water","container-with-most-water","M"]]],
+["Two pointers, more practice","two pointers problems",[["Remove Duplicates from Sorted Array","remove-duplicates-from-sorted-array","E"],["Sort Colors","sort-colors","M"],["Trapping Rain Water","trapping-rain-water","H"]]],
+["Sliding window: fixed size","sliding window fixed size",[["Maximum Average Subarray I","maximum-average-subarray-i","E"],["Permutation in String","permutation-in-string","M"],["Find All Anagrams in a String","find-all-anagrams-in-a-string","M"]]],
+["Sliding window: variable size","sliding window variable size",[["Longest Substring Without Repeating Characters","longest-substring-without-repeating-characters","M"],["Longest Repeating Character Replacement","longest-repeating-character-replacement","M"],["Minimum Size Subarray Sum","minimum-size-subarray-sum","M"]]],
+["Sliding window, harder ones","sliding window hard problems",[["Minimum Window Substring","minimum-window-substring","H"],["Sliding Window Maximum","sliding-window-maximum","H"],["Fruit Into Baskets","fruit-into-baskets","M"]]],
+["Linked list basics","linked list",[["Reverse Linked List","reverse-linked-list","E"],["Middle of the Linked List","middle-of-the-linked-list","E"],["Merge Two Sorted Lists","merge-two-sorted-lists","E"]]],
+["Linked list: fast and slow pointers","linked list cycle fast slow pointer",[["Linked List Cycle","linked-list-cycle","E"],["Remove Nth Node From End of List","remove-nth-node-from-end-of-list","M"],["Palindrome Linked List","palindrome-linked-list","E"]]],
+["Linked list, harder ones","linked list problems medium",[["Reorder List","reorder-list","M"],["Add Two Numbers","add-two-numbers","M"],["Copy List with Random Pointer","copy-list-with-random-pointer","M"]]],
+["Stack","stack data structure",[["Valid Parentheses","valid-parentheses","E"],["Min Stack","min-stack","M"],["Evaluate Reverse Polish Notation","evaluate-reverse-polish-notation","M"]]],
+["Monotonic stack","monotonic stack",[["Daily Temperatures","daily-temperatures","M"],["Next Greater Element I","next-greater-element-i","E"],["Largest Rectangle in Histogram","largest-rectangle-in-histogram","H"]]],
+["Queue and deque","queue deque data structure",[["Implement Queue using Stacks","implement-queue-using-stacks","E"],["Number of Recent Calls","number-of-recent-calls","E"],["Design Circular Queue","design-circular-queue","M"]]],
+["Backtracking: subsets and permutations","backtracking",[["Subsets","subsets","M"],["Permutations","permutations","M"],["Combination Sum","combination-sum","M"]]],
+["Backtracking, more patterns","backtracking problems",[["Subsets II","subsets-ii","M"],["Word Search","word-search","M"],["Palindrome Partitioning","palindrome-partitioning","M"]]],
+["Backtracking, harder ones","backtracking n queens",[["Generate Parentheses","generate-parentheses","M"],["Letter Combinations of a Phone Number","letter-combinations-of-a-phone-number","M"],["N-Queens","n-queens","H"]]],
+["Binary trees: traversals","binary tree traversal",[["Binary Tree Inorder Traversal","binary-tree-inorder-traversal","E"],["Maximum Depth of Binary Tree","maximum-depth-of-binary-tree","E"],["Invert Binary Tree","invert-binary-tree","E"]]],
+["Binary trees: recursion patterns","binary tree recursion",[["Same Tree","same-tree","E"],["Symmetric Tree","symmetric-tree","E"],["Diameter of Binary Tree","diameter-of-binary-tree","E"]]],
+["Trees: BFS and level order","binary tree level order BFS",[["Binary Tree Level Order Traversal","binary-tree-level-order-traversal","M"],["Binary Tree Right Side View","binary-tree-right-side-view","M"],["Binary Tree Zigzag Level Order Traversal","binary-tree-zigzag-level-order-traversal","M"]]],
+["Binary search trees","binary search tree",[["Validate Binary Search Tree","validate-binary-search-tree","M"],["Kth Smallest Element in a BST","kth-smallest-element-in-a-bst","M"],["Lowest Common Ancestor of a BST","lowest-common-ancestor-of-a-binary-search-tree","M"]]],
+["Trees: paths and ancestors","binary tree path sum lowest common ancestor",[["Lowest Common Ancestor of a Binary Tree","lowest-common-ancestor-of-a-binary-tree","M"],["Path Sum","path-sum","E"],["Binary Tree Maximum Path Sum","binary-tree-maximum-path-sum","H"]]],
+["Trees: build and serialize","construct binary tree from traversals",[["Construct Binary Tree from Preorder and Inorder Traversal","construct-binary-tree-from-preorder-and-inorder-traversal","M"],["Subtree of Another Tree","subtree-of-another-tree","E"],["Serialize and Deserialize Binary Tree","serialize-and-deserialize-binary-tree","H"]]],
+["Heaps and priority queues","heap priority queue",[["Kth Largest Element in an Array","kth-largest-element-in-an-array","M"],["Last Stone Weight","last-stone-weight","E"],["K Closest Points to Origin","k-closest-points-to-origin","M"]]],
+["Heaps, harder ones","heap two heaps median",[["Find Median from Data Stream","find-median-from-data-stream","H"],["Task Scheduler","task-scheduler","M"],["Merge k Sorted Lists","merge-k-sorted-lists","H"]]],
+["Greedy","greedy algorithms",[["Jump Game","jump-game","M"],["Jump Game II","jump-game-ii","M"],["Gas Station","gas-station","M"]]],
+["Intervals","merge intervals pattern",[["Merge Intervals","merge-intervals","M"],["Insert Interval","insert-interval","M"],["Non-overlapping Intervals","non-overlapping-intervals","M"]]],
+["Graphs: BFS and DFS on grids","graph DFS BFS",[["Number of Islands","number-of-islands","M"],["Max Area of Island","max-area-of-island","M"],["Flood Fill","flood-fill","E"]]],
+["Graphs: traversal problems","graph BFS multi source",[["Clone Graph","clone-graph","M"],["Rotting Oranges","rotting-oranges","M"],["Pacific Atlantic Water Flow","pacific-atlantic-water-flow","M"]]],
+["Graphs: topological sort","topological sort",[["Course Schedule","course-schedule","M"],["Course Schedule II","course-schedule-ii","M"],["Number of Provinces","number-of-provinces","M"]]],
+["Graphs: union find and bipartite","union find disjoint set",[["Redundant Connection","redundant-connection","M"],["Accounts Merge","accounts-merge","M"],["Is Graph Bipartite?","is-graph-bipartite","M"]]],
+["Graphs: shortest paths","dijkstra algorithm",[["Network Delay Time","network-delay-time","M"],["Cheapest Flights Within K Stops","cheapest-flights-within-k-stops","M"],["Path With Minimum Effort","path-with-minimum-effort","M"]]],
+["Tries","trie data structure",[["Implement Trie (Prefix Tree)","implement-trie-prefix-tree","M"],["Design Add and Search Words Data Structure","design-add-and-search-words-data-structure","M"],["Word Search II","word-search-ii","H"]]],
+/* DP and more */
+["Dynamic programming: 1D basics","dynamic programming 1D",[["Climbing Stairs (again, now as DP)","climbing-stairs","E"],["House Robber","house-robber","M"],["Min Cost Climbing Stairs","min-cost-climbing-stairs","E"]]],
+["Dynamic programming: 1D, next step","dynamic programming house robber decode ways",[["House Robber II","house-robber-ii","M"],["Decode Ways","decode-ways","M"],["Maximum Product Subarray","maximum-product-subarray","M"]]],
+["Dynamic programming: choices and subsequences","dynamic programming coin change",[["Coin Change","coin-change","M"],["Word Break","word-break","M"],["Longest Increasing Subsequence","longest-increasing-subsequence","M"]]],
+["Dynamic programming: knapsack","0/1 knapsack dynamic programming",[["Partition Equal Subset Sum","partition-equal-subset-sum","M"],["Target Sum","target-sum","M"],["Last Stone Weight II","last-stone-weight-ii","M"]]],
+["Dynamic programming: grids","dynamic programming grid",[["Unique Paths","unique-paths","M"],["Minimum Path Sum","minimum-path-sum","M"],["Maximal Square","maximal-square","M"]]],
+["Dynamic programming: strings","longest common subsequence edit distance",[["Longest Common Subsequence","longest-common-subsequence","M"],["Edit Distance","edit-distance","M"],["Palindromic Substrings","palindromic-substrings","M"]]],
+["Dynamic programming: strings, harder","dynamic programming strings hard",[["Longest Palindromic Substring","longest-palindromic-substring","M"],["Distinct Subsequences","distinct-subsequences","H"],["Interleaving String","interleaving-string","M"]]],
+["Dynamic programming: states and intervals","dynamic programming state machine",[["Best Time to Buy and Sell Stock with Cooldown","best-time-to-buy-and-sell-stock-with-cooldown","M"],["Coin Change II","coin-change-ii","M"],["Burst Balloons","burst-balloons","H"]]],
+["Bit manipulation","bit manipulation",[["Number of 1 Bits","number-of-1-bits","E"],["Counting Bits","counting-bits","E"],["Reverse Bits","reverse-bits","E"]]],
+["Matrix problems","matrix problems 2D array",[["Rotate Image","rotate-image","M"],["Spiral Matrix","spiral-matrix","M"],["Set Matrix Zeroes","set-matrix-zeroes","M"]]],
+["Math and strings, mixed","math problems for interviews",[["Happy Number","happy-number","E"],["Plus One","plus-one","E"],["Multiply Strings","multiply-strings","M"]]],
+["Design problems","LRU cache design",[["LRU Cache","lru-cache","M"],["Design Twitter","design-twitter","M"],["Time Based Key-Value Store","time-based-key-value-store","M"]]],
+/* Revision and mocks */
+["Revision: arrays, strings, hashing","revise arrays strings hashing",[["Redo 3 problems from days 3-10 that you got stuck on",null],["Solve 2 new medium problems on these topics",null]]],
+["Revision: linked list, stack, trees","revise linked list stack trees",[["Redo 3 problems from days 16-30 that you got stuck on",null],["Solve 2 new medium problems on these topics",null]]],
+["Revision: graphs, heaps, greedy","revise graphs heaps greedy",[["Redo 3 problems from days 31-40 that you got stuck on",null],["Solve 2 new medium problems on these topics",null]]],
+["Revision: dynamic programming","revise dynamic programming",[["Redo 3 DP problems from days 41-48 that you got stuck on",null],["Solve 2 new medium DP problems",null]]],
+["Mock online assessment 1","online assessment coding round tips",[["Solve 3 problems in 90 minutes, a mix of easy, medium and medium",null],["Review every problem you missed or ran out of time on",null]]],
+["Mock online assessment 2","online assessment coding round",[["Take a LeetCode weekly contest or a 90-minute mix",null],["Write down the patterns you still miss",null]]],
+["Interview practice and CS basics","OS DBMS computer networks interview questions",[["Explain 3 solved problems out loud as if to an interviewer",null],["Skim OS, DBMS, networks and OOP interview questions",null]]],
+["Resume, projects and applications","resume tips for freshers",[["Update your resume and LinkedIn",null],["Make sure your best projects are on GitHub with clear READMEs",null],["Apply to 10 internships or jobs",null]]]
+];
+
+const PHASES = [
+  {name:"Foundation", note:"Days 1-10", color:"var(--p0)", to:10},
+  {name:"Core patterns", note:"Days 11-40", color:"var(--p1)", to:40},
+  {name:"DP and more", note:"Days 41-52", color:"var(--p2)", to:52},
+  {name:"Revision and mocks", note:"Days 53-60", color:"var(--p3)", to:60}
+];
+const phaseOf = n => PHASES.findIndex(p => n <= p.to);
+
+const KEY = "dsa-roadmap-v1";
+let S = {done:{}, start:""};
+try { const r = localStorage.getItem(KEY); if (r) S = Object.assign(S, JSON.parse(r)); } catch(e){}
+const save = () => {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
+  if (window.DSA && window.DSA.onSave) window.DSA.onSave();
+};
+
+const $ = id => document.getElementById(id);
+const dayDone = i => DAYS[i][2].every((_, j) => S.done["d"+i+"-"+j]);
+const say = t => { $("msg").textContent = t; };
+
+function currentDay(){
+  if (S.start){
+    const n = Math.floor((Date.now() - new Date(S.start + "T00:00:00")) / 864e5) + 1;
+    return Math.min(60, Math.max(1, n));
+  }
+  const i = DAYS.findIndex((_, k) => !dayDone(k));
+  return i < 0 ? 60 : i + 1;
+}
+
+// build once
+const grid = $("grid"), list = $("list");
+let lastPhase = -1, html = "";
+DAYS.forEach((d, i) => {
+  const n = i + 1, p = phaseOf(n);
+  grid.insertAdjacentHTML("beforeend",
+    `<a class="cell" id="cell${n}" href="#day${n}" style="--c:${PHASES[p].color}" title="Day ${n}: ${d[0]}">${n}</a>`);
+  if (p !== lastPhase){
+    html += `<div class="phase-title" data-p="${p}"><h2>${PHASES[p].name}</h2><span>${PHASES[p].note}</span></div>`;
+    lastPhase = p;
+  }
+  const rows = d[2].map((it, j) => {
+    const k = "d"+i+"-"+j;
+    const label = it[1]
+      ? `<a href="https://leetcode.com/problems/${it[1]}/" target="_blank" rel="noopener">${it[0]}</a>`
+      : it[0];
+    const diff = it[2] ? `<span class="diff ${it[2]}">${{E:"Easy",M:"Medium",H:"Hard"}[it[2]]}</span>` : "";
+    return `<label class="row" id="r${k}"><input type="checkbox" data-k="${k}"><span class="name">${label}</span>${diff}</label>`;
+  }).join("");
+  const yt = "https://www.youtube.com/results?search_query=" + encodeURIComponent(d[1] + " DSA");
+  const gfg = "https://www.google.com/search?q=" + encodeURIComponent("geeksforgeeks " + d[1]);
+  html += `<details class="day" id="day${n}" data-p="${p}" data-i="${i}" style="--c:${PHASES[p].color}">
+    <summary><span class="num">${n}</span>
+      <span class="t"><strong>${d[0]}</strong><small id="cnt${i}"></small></span>
+      <span class="mini"><i id="bar${i}"></i></span></summary>
+    <div class="body">${rows}
+      <p class="learn">Learn it: <a href="${yt}" target="_blank" rel="noopener">find videos on YouTube</a> or <a href="${gfg}" target="_blank" rel="noopener">read notes on GeeksforGeeks</a></p>
+    </div></details>`;
+});
+list.innerHTML = html;
+
+let filter = "all", hideDone = false;
+
+function refresh(){
+  let daysDone = 0, probs = 0, probsDone = 0, items = 0, itemsDone = 0;
+  const today = currentDay();
+  DAYS.forEach((d, i) => {
+    const n = i + 1;
+    let got = 0;
+    d[2].forEach((it, j) => {
+      const k = "d"+i+"-"+j, on = !!S.done[k];
+      const box = list.querySelector(`input[data-k="${k}"]`);
+      box.checked = on;
+      $("r"+k).classList.toggle("ticked", on);
+      items++; if (on){ got++; itemsDone++; }
+      if (it[1]){ probs++; if (on) probsDone++; }
+    });
+    const done = got === d[2].length;
+    if (done) daysDone++;
+    $("cnt"+i).textContent = got + " of " + d[2].length + " done";
+    $("bar"+i).style.width = (got / d[2].length * 100) + "%";
+    const card = $("day"+n);
+    card.classList.toggle("done", done);
+    card.classList.toggle("today", n === today && !done);
+    const cell = $("cell"+n);
+    cell.classList.toggle("done", done);
+    cell.classList.toggle("today", n === today);
+    const p = +card.dataset.p;
+    card.hidden = (filter !== "all" && +filter !== p) || (hideDone && done);
+  });
+  list.querySelectorAll(".phase-title").forEach(t => {
+    const p = +t.dataset.p;
+    t.hidden = filter !== "all" && +filter !== p;
+  });
+  $("sDays").textContent = daysDone + "/60";
+  $("sProbs").textContent = probsDone + "/" + probs;
+  $("sPct").textContent = Math.round(itemsDone / items * 100) + "%";
+}
+
+list.addEventListener("change", e => {
+  const k = e.target.dataset && e.target.dataset.k;
+  if (!k) return;
+  if (e.target.checked) S.done[k] = true; else delete S.done[k];
+  save(); refresh();
+});
+
+$("filters").addEventListener("click", e => {
+  const c = e.target.closest(".chip");
+  if (!c) return;
+  if (c.id === "hideDone"){
+    hideDone = !hideDone;
+    c.setAttribute("aria-pressed", hideDone);
+  } else {
+    filter = c.dataset.p;
+    $("filters").querySelectorAll(".chip[data-p]").forEach(b => b.setAttribute("aria-pressed", b === c));
+  }
+  refresh();
+});
+
+$("start").value = S.start;
+$("start").addEventListener("change", e => { S.start = e.target.value; save(); refresh(); });
+
+$("goto").addEventListener("click", () => {
+  const n = currentDay(), card = $("day"+n);
+  filter = "all"; hideDone = false;
+  $("filters").querySelectorAll(".chip[data-p]").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === "all"));
+  $("hideDone").setAttribute("aria-pressed", "false");
+  refresh();
+  card.open = true;
+  card.scrollIntoView({block:"start"});
+});
+
+$("copy").addEventListener("click", async () => {
+  const code = btoa(JSON.stringify(S));
+  try { await navigator.clipboard.writeText(code); say("Backup code copied. Paste it somewhere safe."); }
+  catch(e){ window.prompt("Copy this backup code:", code); }
+});
+$("restore").addEventListener("click", () => {
+  const code = window.prompt("Paste your backup code:");
+  if (!code) return;
+  try {
+    const o = JSON.parse(atob(code.trim()));
+    if (!o || typeof o.done !== "object") throw 0;
+    S = {done:o.done, start:o.start || ""};
+    $("start").value = S.start;
+    save(); refresh(); say("Progress restored.");
+  } catch(e){ say("That code didn't work. Check that you copied all of it."); }
+});
+$("reset").addEventListener("click", () => {
+  if (!window.confirm("Reset all progress? This can't be undone.")) return;
+  S = {done:{}, start:""}; $("start").value = "";
+  save(); refresh(); say("Progress reset.");
+});
+
+// bridge used by the cloud sync module below
+window.DSA = {
+  get: () => S,
+  set: o => {
+    S = {done:(o && o.done) || {}, start:(o && o.start) || ""};
+    $("start").value = S.start;
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
+    refresh();
+  },
+  onSave: null
+};
+
+refresh();
+const cur = $("day"+currentDay()); if (cur) cur.open = true;
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Paste your Firebase web app config here (Firebase console > Project settings > Your apps).
+const firebaseConfig = {
+  apiKey: "AIzaSyBVN2HHKsd723ee_HDzU9rHtzb0qbExEBA",
+  authDomain: "dsa-roadmap-kb.firebaseapp.com",
+  projectId: "dsa-roadmap-kb",
+  appId: "1:556038264827:web:8d1d5ff4588f63ff7e1d5e"
+};
+
+const box = document.getElementById("acct");
+const configured = !firebaseConfig.apiKey.startsWith("PASTE");
+
+if (!configured) {
+  box.textContent = "Progress is saved in this browser only. Sign-in isn't set up yet.";
+} else {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  let ref = null, unsub = null, timer = null;
+
+  const showSignedOut = (note) => {
+    box.innerHTML = "";
+    const b = document.createElement("button");
+    b.className = "btn"; b.textContent = "Sign in with Google to sync";
+    b.onclick = async () => {
+      try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+      catch (e) { box.append(" Sign-in failed: " + (e.code || e.message)); }
+    };
+    const t = document.createElement("span");
+    t.textContent = note || "Progress is saved in this browser only.";
+    box.append(b, t);
+  };
+  const showSignedIn = (user, note) => {
+    box.innerHTML = "";
+    const who = document.createElement("span"); who.className = "who";
+    who.textContent = user.displayName || user.email;
+    const sync = document.createElement("span"); sync.className = "sync"; sync.id = "syncNote";
+    sync.textContent = note || "Synced";
+    const out = document.createElement("button"); out.className = "btn"; out.textContent = "Sign out";
+    out.onclick = () => signOut(auth);
+    box.append(who, sync, out);
+  };
+  const setNote = (t) => { const n = document.getElementById("syncNote"); if (n) n.textContent = t; };
+
+  const push = () => {
+    if (!ref) return;
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      try {
+        await setDoc(ref, { ...window.DSA.get(), updatedAt: Date.now() });
+        setNote("Synced");
+      } catch (e) { setNote("Couldn't sync: " + (e.code || e.message)); }
+    }, 600);
+  };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (unsub) { unsub(); unsub = null; }
+    window.DSA.onSave = null; ref = null;
+    if (!user) { showSignedOut(); return; }
+    showSignedIn(user, "Syncing...");
+    ref = doc(db, "users", user.uid);
+    try {
+      // first sign-in on this device: merge what's saved here with what's in the cloud
+      const snap = await getDoc(ref);
+      const local = window.DSA.get();
+      const remote = snap.exists() ? snap.data() : { done: {}, start: "" };
+      const merged = { done: { ...(remote.done || {}), ...(local.done || {}) }, start: remote.start || local.start || "" };
+      window.DSA.set(merged);
+      await setDoc(ref, { ...merged, updatedAt: Date.now() });
+      setNote("Synced");
+      window.DSA.onSave = push;
+      // pick up changes made on your other devices
+      unsub = onSnapshot(ref, (s) => {
+        if (s.metadata.hasPendingWrites || !s.exists()) return;
+        const d = s.data(), cur = window.DSA.get();
+        if (JSON.stringify(d.done || {}) !== JSON.stringify(cur.done) || (d.start || "") !== cur.start) {
+          window.DSA.set(d);
+        }
+      });
+    } catch (e) {
+      setNote("Couldn't sync: " + (e.code || e.message));
+      window.DSA.onSave = push;
+    }
+  });
+}
+</script>
+</body>
+</html>
